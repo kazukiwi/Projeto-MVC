@@ -53,3 +53,46 @@ def cadastrar_usuario(
 
     #Redirecionar para a tela de login após cadastro
     return RedirectResponse("/auth/login?cadastro=success", status_code=303)
+
+@router.post("/login")
+def login_usuario(
+    request: Request,
+    email: str = Form(...),
+    senha: str = Form(...),
+    db: Session = Depends(get_db)
+):
+    #Verificar se o usuário existe
+    usuario = db.query(Usuario).filter(Usuario.email == email).first()
+    if not usuario or not verificar_senha(senha, usuario.senha_hash):
+        return templates.TemplateResponse(
+            request,
+            "auth/login.html",
+            {"request": request, "erro": "E-mail ou senha inválidos"}
+        )
+    
+    if not usuario.ativo:
+        return templates.TemplateResponse(
+            request,
+            "auth/login.html",
+            {"request": request, "erro": "Usuário inativo. Contate o administrador."}
+        )
+    
+    #Criar token de acesso
+    token_data = {
+        "sub": usuario.email,
+        "nome": usuario.nome,
+        "role": usuario.role,
+        "id": usuario.id
+    }
+
+    token = criar_token(token_data)
+
+    #Redirecionar para a tela inicial com o token no cookie
+    response = RedirectResponse("/", status_code=303)
+    response.set_cookie(
+        key="access_token", 
+        value=token, 
+        httponly=True, 
+        max_age=3600,
+        samesite="lax")
+    return response
