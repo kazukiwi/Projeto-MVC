@@ -19,3 +19,11 @@ def tela_cadastro(request: Request):
         "auth/cadastro.html",
         {"request": request}
     )
+
+@router.get("/login")
+def tela_login(request: Request):
+    return templates.TemplateResponse(
+        request,
+        "auth/login.html",
+        {"request": request}
+    )

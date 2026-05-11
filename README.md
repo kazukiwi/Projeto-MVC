@@ -1,7 +1,3 @@
-Com certeza! Aqui está o guia técnico focado estritamente nos blocos de código e comandos, organizado de forma limpa para facilitar o "copia e cola".
-
----
-
 ### 1. Instalação
 ```bash
 pip install -r requirements.txt
@@ -50,6 +46,11 @@ python -m alembic revision --autogenerate -m "Criar tabela usuarios"
 **Aplicar ao Banco (Upgrade):**
 ```bash
 python -m alembic upgrade head
+```
+
+**Como rodar o código:**
+```bash
+python -m uvicorn app.main:app --reload
 ```
 
 ---

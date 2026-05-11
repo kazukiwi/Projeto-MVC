@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem Vindo! - AAPM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.1); }
+        }
+
+        :root {
+            --accent: #6366f1;
+            --bg-dark: #020617;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(-45deg, #020617, #0f172a, #020617, #1e1b4b);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Luz de fundo suave (Aura) */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulseGlow 8s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 50px 40px;
+            border-radius: 32px;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            z-index: 1;
+            position: relative;
+        }
+
+        .badge {
+            background: rgba(99, 102, 241, 0.1);
+            color: #a5b4fc;
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            margin-bottom: 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            color: #94a3b8;
+            font-size: 1.05rem;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .btn {
+            padding: 16px;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: #ffffff;
+            color: #020617;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.03);
+            background: #f8fafc;
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.03);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.03);
+        }
+
+        .btn i {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Efeito de brilho sutil no topo do card */
+        .glass-card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 20%;
+            right: 20%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glass-card">
+        <div class="badge">
+            <i data-lucide="shield-check"></i> Gateway Seguro
+        </div>
+        
+        <h1>Sistema de Estoque</h1>
+        
+        <p>Gestão inteligente e controle total de inventário para a unidade <b>AAPM</b>.</p>
+        
+        <div class="button-group">
+            <a href="/auth/login" class="btn btn-primary">
+                <i data-lucide="log-in"></i> Entrar no Sistema
+            </a>
+            <a href="/auth/cadastro" class="btn btn-secondary">
+                <i data-lucide="user-plus"></i> Criar Nova Conta
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Inicializa os ícones
+        lucide.createIcons();
+    </script>
+</body>
+</html>
