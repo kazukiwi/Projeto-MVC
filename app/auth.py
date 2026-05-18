@@ -44,6 +44,7 @@ def decodificar_token(token: str):
 
 #Dependência do fastapi
 def get_usuario_logado(request: Request):
+    
     token = request.cookies.get("access_token")
 
     if not token:
@@ -60,6 +61,8 @@ def get_usuario_logado(request: Request):
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Token inválido"
             )
+        
+        return payload
     except JWTError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

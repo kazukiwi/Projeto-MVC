@@ -88,11 +88,17 @@ def login_usuario(
     token = criar_token(token_data)
 
     #Redirecionar para a tela inicial com o token no cookie
-    response = RedirectResponse("/", status_code=303)
+    response = RedirectResponse(url="/", status_code=302)
     response.set_cookie(
         key="access_token", 
         value=token, 
         httponly=True, 
         max_age=3600,
         samesite="lax")
+    return response
+
+@router.get("/logout")
+def logout_usuario():
+    response = RedirectResponse(url="/", status_code=302)
+    response.delete_cookie(key="access_token")
     return response
