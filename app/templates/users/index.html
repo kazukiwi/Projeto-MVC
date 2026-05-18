@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuários — Estoque</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        :root {
+            --accent: #6366f1;
+            --accent-hover: rgba(99, 102, 241, 0.15);
+            --bg-dark: #020617;
+            --glass: rgba(15, 23, 42, 0.65);
+            --border: rgba(255, 255, 255, 0.08);
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(-45deg, #020617, #0f172a, #020617, #1e1b4b);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
+            height: 100vh;
+            display: flex;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* SIDEBAR (Barra Lateral Mantida) */
+        .sidebar {
+            width: 260px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 32px 16px;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-left: 12px;
+            margin-bottom: 40px;
+        }
+
+        .brand-logo {
+            background: var(--accent);
+            padding: 8px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .brand span {
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .menu-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-grow: 1;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: white;
+            background: var(--accent-hover);
+        }
+
+        .nav-link.active {
+            border-left: 3px solid var(--accent);
+            border-radius: 4px 12px 12px 4px;
+            padding-left: 13px;
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
+        }
+
+        /* CONTEÚDO PRINCIPAL */
+        .main-content {
+            flex-grow: 1;
+            padding: 40px;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: -0.04em;
+            background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-create {
+            background: white;
+            color: #020617;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-create:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
+            background: #f8fafc;
+        }
+
+        /* Feedback Boxes */
+        .alert-box {
+            padding: 14px 20px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: #a7f3d0;
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+
+        /* TABELA GLASSMORPHISM */
+        .table-container {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 18px 24px;
+            color: #94a3b8;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            padding: 18px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            color: #e2e8f0;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        /* Badges de Status e Perfil */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-active { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+        .badge-inactive { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; }
+        .badge-role { background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.2); }
+
+        /* Célula de Ações Modificada */
+        .actions-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-edit {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #e2e8f0;
+            padding: 6px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-edit:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .btn-toggle {
+            border: 1px solid transparent;
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Estilo condicional caso o usuário precise ser desativado */
+        .btn-toggle.deactivate {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+        }
+
+        .btn-toggle.deactivate:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #f87171;
+        }
+
+        /* Estilo condicional caso o usuário precise ser ativado */
+        .btn-toggle.activate {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.15);
+            color: #a7f3d0;
+        }
+
+        .btn-toggle.activate:hover {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: rgba(16, 185, 129, 0.3);
+            color: #34d399;
+        }
+
+        @media (max-width: 1024px) {
+            body { flex-direction: column; overflow-y: auto; height: auto; }
+            .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+            .menu-nav { flex-direction: row; flex-wrap: wrap; }
+            .main-content { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div>
+            <div class="brand">
+                <div class="brand-logo">
+                    <i data-lucide="boxes" style="width:22px; height:22px;"></i>
+                </div>
+                <span>AAPM Estoque</span>
+            </div>
+
+            <nav class="menu-nav">
+                <a href="/" class="nav-link">
+                    <i data-lucide="layout-dashboard"></i> Início
+                </a>
+                <a href="#usuarios" class="nav-link active">
+                    <i data-lucide="users"></i> Usuários
+                </a>
+                <a href="#produtos" class="nav-link">
+                    <i data-lucide="package"></i> Produtos
+                </a>
+                <a href="#movimentacoes" class="nav-link">
+                    <i data-lucide="arrow-left-right"></i> Movimentações
+                </a>
+                <a href="#configuracoes" class="nav-link">
+                    <i data-lucide="settings"></i> Configurações
+                </a>
+            </nav>
+        </div>
+
+        <div>
+            <a href="/auth/logout" class="logout-btn">
+                <i data-lucide="log-out"></i> Sair do Sistema
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1>Gerenciamento de Usuários</h1>
+            <a href="/usuarios/novo" class="btn-create">
+                <i data-lucide="user-plus" style="width: 18px;"></i>
+                Novo usuário
+            </a>
+        </div>
+
+        {% if request.query_params.get('criado') == 'ok' %}
+            <div class="alert-box alert-success">
+                <i data-lucide="check-circle" style="width:18px"></i>
+                Usuário criado com sucesso!
+            </div>
+        {% endif %}
+        
+        {% if request.query_params.get('editado') == 'ok' %}
+            <div class="alert-box alert-success">
+                <i data-lucide="check-circle" style="width:18px"></i>
+                Usuário atualizado com sucesso!
+            </div>
+        {% endif %}
+        
+        {% if request.query_params.get('erro') == 'autoproprio' %}
+            <div class="alert-box alert-error">
+                <i data-lucide="alert-triangle" style="width:18px"></i>
+                Você não pode desativar sua própria conta.
+            </div>
+        {% endif %}
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>E-mail</th>
+                        <th>Perfil</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in usuarios %}
+                    <tr>
+                        <td style="font-weight: 600;">{{ u.nome }}</td>
+                        <td style="color: #94a3b8;">{{ u.email }}</td>
+                        <td>
+                            <span class="badge badge-role">{{ u.role }}</span>
+                        </td>
+                        <td>
+                            {% if u.ativo %}
+                                <span class="badge badge-active">Ativo</span>
+                            {% else %}
+                                <span class="badge badge-inactive">Inativo</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="actions-cell">
+                                <a href="/usuarios/{{ u.id }}/editar" class="btn-edit">
+                                    <i data-lucide="user-cog" style="width: 14px; height: 14px;"></i>
+                                    Editar
+                                </a>
+
+                                <form action="/usuarios/{{ u.id }}/toggle-ativo" method="post" style="display:inline">
+                                    {% if u.ativo %}
+                                        <button type="submit" class="btn-toggle deactivate">
+                                            <i data-lucide="user-minus" style="width: 14px; height: 14px;"></i>
+                                            Desativar
+                                        </button>
+                                    {% else %}
+                                        <button type="submit" class="btn-toggle activate">
+                                            <i data-lucide="user-check" style="width: 14px; height: 14px;"></i>
+                                            Ativar
+                                        </button>
+                                    {% endif %}
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
